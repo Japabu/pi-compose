@@ -1,0 +1,18 @@
+services:
+  paddibot:
+    container_name: paddibot
+    image: ghcr.io/japabu/paddibot:latest
+    environment:
+      CLIENT_ID: 1170359617134534736
+      TOKEN: MTE3MDM1OTYxNzEzNDUzNDczNg.GNPjBt.cenwFm9oUatMQu44vAp2VQsOtz7Mv_9ThQc2_0
+  blunderbot:
+    container_name: blunderbot
+    image: ghcr.io/japabu/blunderbot:latest
+    environment:
+      CLIENT_ID: 1172565845839462481
+      TOKEN: MTE3MjU2NTg0NTgzOTQ2MjQ4MQ.G2XFpz.-LvdRF6AvxYlRobmxRB04-boChbn6MlBgdrryw
+      STOCKFISH_SERVER_URL: http://stockfish-server:3000
+  stockfish-server:
+    container_name: stockfish-server
+    image: ghcr.io/japabu/stockfish-server:latest
+    privileged: true
