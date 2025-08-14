@@ -43,3 +43,13 @@ services:
       - "traefik.http.routers.henk.entrypoints=websecure"
       - "traefik.http.routers.henk.tls.certresolver=letsencrypt"
       - "traefik.http.services.henk.loadbalancer.server.port=80"
+  memescraper:
+    image: ghcr.io/japabu/memescraper:latest
+    container_name: memesraper
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.memesraper.rule=Host(`memesraper.pi.japabu.ch`)"
+      - "traefik.http.routers.memesraper.entrypoints=websecure"
+      - "traefik.http.routers.memesraper.tls.certresolver=letsencrypt"
+      - "traefik.http.services.memesraper.loadbalancer.server.port=80"
