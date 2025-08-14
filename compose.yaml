@@ -16,3 +16,30 @@ services:
     container_name: stockfish-server
     image: ghcr.io/japabu/stockfish-server:latest
     privileged: true
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik
+    restart: always
+    command:
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=japa.busse@gmail.com
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+  henk:
+    image: ghcr.io/japabu/henk:latest
+    container_name: henk
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.henk.rule=Host(`henk.pi.japabu.ch`)"
+      - "traefik.http.routers.henk.entrypoints=websecure"
+      - "traefik.http.routers.henk.tls.certresolver=letsencrypt"
+      - "traefik.http.services.henk.loadbalancer.server.port=80"
