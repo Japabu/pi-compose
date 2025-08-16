@@ -55,7 +55,7 @@ services:
       - "traefik.http.services.memesraper.loadbalancer.server.port=80"
   flappy:
     image: ghcr.io/japabu/flappy:latest
-    container_name: memesraper
+    container_name: flappy
     restart: always
     labels:
       - "traefik.enable=true"
