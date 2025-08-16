@@ -53,3 +53,14 @@ services:
       - "traefik.http.routers.memesraper.entrypoints=websecure"
       - "traefik.http.routers.memesraper.tls.certresolver=letsencrypt"
       - "traefik.http.services.memesraper.loadbalancer.server.port=80"
+  flappy:
+    image: ghcr.io/japabu/flappy:latest
+    container_name: memesraper
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flappy.rule=Host(`flappy.pi.japabu.ch`)"
+      - "traefik.http.routers.flappy.entrypoints=websecure"
+      - "traefik.http.routers.flappy.tls.certresolver=letsencrypt"
+      - "traefik.http.services.flappy.loadbalancer.server.port=80"
+      
