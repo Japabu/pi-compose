@@ -1,1 +1,3 @@
 letsencrypt/
+.env
+.deployed
