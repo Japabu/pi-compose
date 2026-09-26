@@ -12,7 +12,8 @@ x-defaults: &defaults
       max-size: 10m
       max-file: "3"
 
-services:  paddibot:
+services:
+  paddibot:
     <<: *defaults
     image: ghcr.io/japabu/paddibot:sha-a2bf20a
     container_name: paddibot
