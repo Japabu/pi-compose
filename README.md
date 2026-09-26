@@ -25,18 +25,15 @@ Pi (pi-compose-deploy.timer, every 1 min) ──► git reset to origin/main
 | Service | Repo | URL |
 |---|---|---|
 | paddibot | [Japabu/paddibot](https://github.com/Japabu/paddibot) | Discord bot |
-| blunderbot | [Japabu/blunderbot](https://github.com/Japabu/blunderbot) | Discord bot |
-| stockfish-server | [Japabu/stockfish-server](https://github.com/Japabu/stockfish-server) | internal, used by blunderbot |
-| henk | [Japabu/henk](https://github.com/Japabu/henk) | https://henk.pi.japabu.zapto.org |
-| memescraper | [Japabu/memescraper](https://github.com/Japabu/memescraper) | https://memesraper.pi.japabu.zapto.org |
-| flappy | [Japabu/flappy](https://github.com/Japabu/flappy) | https://flappy.pi.japabu.zapto.org |
-| traefik | — | HTTPS + Let's Encrypt for the web apps |
+
+Currently disabled to keep the Pi 3 light (their repos still build images; restore by reverting the removal commit here):
+blunderbot + stockfish-server, and the web apps henk, memescraper, flappy behind traefik (`*.pi.japabu.zapto.org`).
 
 ## Adding a new app
 
 1. In the app repo, add a `Dockerfile` and copy `.github/workflows/ci.yml` from any app repo above.
 2. Add the `PI_COMPOSE_DEPLOY_KEY` secret to the app repo (the private half of the write deploy key on this repo).
-3. Add a service to `compose.yaml` here with `image: ghcr.io/japabu/<repo>:latest`. The first CI run on main pins it to a commit tag.
+3. Add a service to `compose.yaml` here (web apps also need traefik back, see git history) with `image: ghcr.io/japabu/<repo>:latest`. The first CI run on main pins it to a commit tag.
 4. Make the ghcr package public (Package settings → visibility) so the Pi can pull it.
 
 ## Secrets

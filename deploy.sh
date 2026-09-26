@@ -16,7 +16,7 @@ fi
 
 echo "Deploying ${target:0:7}: $(git log -1 --format=%s "$target")"
 git reset --hard --quiet "$target"
-docker compose up -d --remove-orphans
+docker compose up -d --remove-orphans --quiet-pull
 echo "$target" > .deployed
 docker image prune -af >/dev/null
 echo "Deployed ${target:0:7}"

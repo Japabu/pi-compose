@@ -1,5 +1,7 @@
 # Everything running on the Pi. The Pi pulls this repo every minute and applies it (see deploy.sh).
 # App images are pinned to commit tags; each app's CI bumps its tag here after a merge to main.
+# Other apps (blunderbot, stockfish-server, traefik + henk/memescraper/flappy) were removed
+# to keep the Pi 3 light; restore them with `git revert` of the commit that removed them.
 # Secrets live in .env on the Pi (not in git) — see .env.example.
 
 x-defaults: &defaults
@@ -10,79 +12,10 @@ x-defaults: &defaults
       max-size: 10m
       max-file: "3"
 
-services:
-  traefik:
-    <<: *defaults
-    image: traefik:v2.11
-    container_name: traefik
-    command:
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.websecure.http.tls=true
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
-      - --certificatesresolvers.letsencrypt.acme.email=japa.busse@gmail.com
-      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
-    ports:
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
-
-  paddibot:
+services:  paddibot:
     <<: *defaults
     image: ghcr.io/japabu/paddibot:sha-a2bf20a
     container_name: paddibot
     environment:
       CLIENT_ID: "1170359617134534736"
       TOKEN: ${PADDIBOT_TOKEN:?set PADDIBOT_TOKEN in .env}
-
-  blunderbot:
-    <<: *defaults
-    image: ghcr.io/japabu/blunderbot:latest
-    container_name: blunderbot
-    environment:
-      CLIENT_ID: "1172565845839462481"
-      TOKEN: ${BLUNDERBOT_TOKEN:?set BLUNDERBOT_TOKEN in .env}
-      STOCKFISH_SERVER_URL: http://stockfish-server:3000
-    depends_on:
-      - stockfish-server
-
-  stockfish-server:
-    <<: *defaults
-    image: ghcr.io/japabu/stockfish-server:latest
-    container_name: stockfish-server
-    privileged: true
-
-  henk:
-    <<: *defaults
-    image: ghcr.io/japabu/henk:latest
-    container_name: henk
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.henk.rule=Host(`henk.pi.japabu.zapto.org`)
-      - traefik.http.routers.henk.entrypoints=websecure
-      - traefik.http.routers.henk.tls.certresolver=letsencrypt
-      - traefik.http.services.henk.loadbalancer.server.port=80
-
-  memescraper:
-    <<: *defaults
-    image: ghcr.io/japabu/memescraper:latest
-    container_name: memesraper
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.memesraper.rule=Host(`memesraper.pi.japabu.zapto.org`)
-      - traefik.http.routers.memesraper.entrypoints=websecure
-      - traefik.http.routers.memesraper.tls.certresolver=letsencrypt
-      - traefik.http.services.memesraper.loadbalancer.server.port=80
-
-  flappy:
-    <<: *defaults
-    image: ghcr.io/japabu/flappy:latest
-    container_name: flappy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.flappy.rule=Host(`flappy.pi.japabu.zapto.org`)
-      - traefik.http.routers.flappy.entrypoints=websecure
-      - traefik.http.routers.flappy.tls.certresolver=letsencrypt
-      - traefik.http.services.flappy.loadbalancer.server.port=80

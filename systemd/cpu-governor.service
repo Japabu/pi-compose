@@ -1,0 +1,9 @@
+[Unit]
+Description=Let the CPU scale up to full speed under load (kernel default is powersave = 600 MHz)
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'for g in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do echo ondemand > "$g"; done'
+
+[Install]
+WantedBy=multi-user.target
