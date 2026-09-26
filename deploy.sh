@@ -3,6 +3,8 @@
 # Usage: ./deploy.sh [--force]    (--force redeploys even if origin/main was already applied)
 set -euo pipefail
 cd "$(dirname "$0")"
+exec 9>/tmp/pi-compose-deploy.lock
+flock -n 9 || { echo "Another deploy is running"; exit 0; }
 
 export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/pi_compose_deploy -o IdentitiesOnly=yes -o BatchMode=yes"
 git fetch --quiet origin main
