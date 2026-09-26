@@ -15,7 +15,7 @@ x-defaults: &defaults
 services:
   paddibot:
     <<: *defaults
-    image: ghcr.io/japabu/paddibot:sha-92e6958
+    image: ghcr.io/japabu/paddibot:sha-0203c85
     container_name: paddibot
     environment:
       CLIENT_ID: "1170359617134534736"
