@@ -23,7 +23,7 @@ services:
 
   blunderbot:
     <<: *defaults
-    image: ghcr.io/japabu/blunderbot:sha-cf81984
+    image: ghcr.io/japabu/blunderbot:sha-e5a66ab
     container_name: blunderbot
     environment:
       CLIENT_ID: "1172565845839462481"
