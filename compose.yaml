@@ -29,6 +29,8 @@ services:
       CLIENT_ID: "1172565845839462481"
       TOKEN: ${BLUNDERBOT_TOKEN:?set BLUNDERBOT_TOKEN in .env}
       STOCKFISH_SERVER_URL: http://stockfish-server:3000
+    volumes:
+      - ./blunderbot-data:/app/data  # the /lichess session, so restarts keep spectating
     depends_on:
       - stockfish-server
 
@@ -36,4 +38,3 @@ services:
     <<: *defaults
     image: ghcr.io/japabu/stockfish-server:sha-706eab1
     container_name: stockfish-server
-    privileged: true
