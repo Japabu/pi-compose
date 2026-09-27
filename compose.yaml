@@ -36,5 +36,5 @@ services:
 
   stockfish-server:
     <<: *defaults
-    image: ghcr.io/japabu/stockfish-server:sha-706eab1
+    image: ghcr.io/japabu/stockfish-server:sha-18f24b7
     container_name: stockfish-server
