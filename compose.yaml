@@ -1,6 +1,6 @@
 # Everything running on the Pi. The Pi pulls this repo every minute and applies it (see deploy.sh).
 # App images are pinned to commit tags; each app's CI bumps its tag here after a merge to main.
-# Other apps (blunderbot, stockfish-server, traefik + henk/memescraper/flappy) were removed
+# Other apps (traefik + henk/memescraper/flappy) were removed
 # to keep the Pi 3 light; restore them with `git revert` of the commit that removed them.
 # Secrets live in .env on the Pi (not in git) — see .env.example.
 
@@ -20,3 +20,20 @@ services:
     environment:
       CLIENT_ID: "1170359617134534736"
       TOKEN: ${PADDIBOT_TOKEN:?set PADDIBOT_TOKEN in .env}
+
+  blunderbot:
+    <<: *defaults
+    image: ghcr.io/japabu/blunderbot:sha-92d401e
+    container_name: blunderbot
+    environment:
+      CLIENT_ID: "1172565845839462481"
+      TOKEN: ${BLUNDERBOT_TOKEN:?set BLUNDERBOT_TOKEN in .env}
+      STOCKFISH_SERVER_URL: http://stockfish-server:3000
+    depends_on:
+      - stockfish-server
+
+  stockfish-server:
+    <<: *defaults
+    image: ghcr.io/japabu/stockfish-server:sha-706eab1
+    container_name: stockfish-server
+    privileged: true
