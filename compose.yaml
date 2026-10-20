@@ -20,6 +20,8 @@ services:
     environment:
       CLIENT_ID: "1170359617134534736"
       TOKEN: ${PADDIBOT_TOKEN:?set PADDIBOT_TOKEN in .env}
+    volumes:
+      - ./paddibot-data:/app/data  # saved per-server autoplay settings
 
   blunderbot:
     <<: *defaults
