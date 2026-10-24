@@ -31,6 +31,14 @@ services:
       CLIENT_ID: "1172565845839462481"
       TOKEN: ${BLUNDERBOT_TOKEN:?set BLUNDERBOT_TOKEN in .env}
       STOCKFISH_SERVER_URL: http://stockfish-server:3000
+      CONTROL_MODE: direct
+      CONTROL_BIND: 0.0.0.0
+      CONTROL_PUBLIC_ORIGIN: http://pi.tail17bb6e.ts.net:8769
+      CONTROL_EXTRA_ORIGINS: http://100.94.67.125:8769,http://pi:8769
+      FFMPEG_PATH: /usr/bin/ffmpeg
+    ports:
+      - "127.0.0.1:8769:8769"
+      - "100.94.67.125:8769:8769"  # tailnet interface only; no LAN/public binding
     volumes:
       - ./blunderbot-data:/app/data  # the /lichess session, so restarts keep spectating
     depends_on:
