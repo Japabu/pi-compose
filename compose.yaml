@@ -38,7 +38,7 @@ services:
 
   stockfish-server:
     <<: *defaults
-    image: ghcr.io/japabu/stockfish-server:sha-f48f52f
+    image: ghcr.io/japabu/stockfish-server:sha-bb494f1
     container_name: stockfish-server
     # The Android Stockfish build aborts under Docker's default seccomp profile (it's why this used to
     # be privileged); lifting seccomp is enough
